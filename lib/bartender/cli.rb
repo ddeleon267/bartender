@@ -6,11 +6,10 @@ class Cli
     puts "Enter an ingredient to see drinks made with that ingredient."
     puts "  "
     @ingredient = gets.strip.downcase
-    Api.get_drinks(@ingredient)
-
+    Api.get_drinks(@ingredient) ## send query to the api - get all drinks with this ingredient
     ## display a list of drinks to the user
     print_drinks(Drink.all)
-    ## ask them to pick a drink
+    ## present user with next steps
     prompt_user
     input = gets.strip.downcase
 
@@ -22,15 +21,14 @@ class Cli
       elsif input.to_i > 0 && input.to_i < Drink.select_by_ingredient(@ingredient).length
         drink =  Drink.select_by_ingredient(@ingredient)[input.to_i - 1]
         ## go ahead and get the details for that drink
-        Api.getDrinkDetails(drink) if !drink.instructions
-        print_drink(drink)
-
-      # elsif ## user picks another drink
+        Api.getDrinkDetails(drink) if !drink.instructions ## only hitting the api if I haven't updated this drink object already
+        print_drink(drink) # print the details for THIS drink
+      # elsif ## user picks another ingredient
           ## do some other stuff
       else
         puts "I do not understand - please try again"
       end
-      prompt_user
+      prompt_user ## restart the process if user entered invalid input
       input = gets.strip.downcase
     end
     puts " "
@@ -59,5 +57,3 @@ class Cli
   end
 
 end
-
-### handles input FROM my user and output TO my user
