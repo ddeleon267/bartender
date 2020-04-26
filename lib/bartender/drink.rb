@@ -1,5 +1,6 @@
-class Drink
+## resposible for making drinks.
 
+class Drink
   attr_accessor :name, :drink_id, :ingredient, :instructions
 
   @@all = []
@@ -17,9 +18,5 @@ class Drink
 
   def self.select_by_ingredient(ingredient)
     self.all.select {|drink| drink.ingredient == ingredient}
-
   end
-
 end
-
-## resposible for making drinks.
