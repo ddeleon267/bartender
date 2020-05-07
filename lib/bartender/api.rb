@@ -1,16 +1,19 @@
 class Api
   def self.get_drinks(ingredient)
-    ## what is my endpoint?
-    url = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=#{ingredient}"
-    ## how do I go there and get the data I need?
+    key = ENV.fetch()
+    url = "https://www.thecocktaildb.com/api/json/v1/#{key}/filter.php?i=#{ingredient}"
+
+
     response = Net::HTTP.get(URI(url))
-    ## how do I handle that response and parse it into meaningful json?
+
     drinks = JSON.parse(response)["drinks"]
-    ### how do I make drink OBJECTS from that data?
+
+    new_ingredient = Ingredient.new(ingredient)
     drinks.each do |drink_details|
       name = drink_details["strDrink"]
       drink_id = drink_details["idDrink"]
-      Drink.new(name: name, drink_id: drink_id, ingredient: ingredient)
+      new_drink = Drink.new(name: name, drink_id: drink_id, ingredient: ingredient)
+      new_ingredient.drinks << new_drink
     end
   end
 
@@ -21,9 +24,17 @@ class Api
     response = Net::HTTP.get(URI(url))
     # how do I parse the response into meaningful json data?
     drink_details = JSON.parse(response)["drinks"].first
+
     ## what do I want to do from there?
     ## add an attribute on my EXISTING drink obj
     drink.instructions = drink_details["strInstructions"]
+    drink.glass = drink_details["strGlass"]
+    drink_details.keys.each do |k|
+
+      drink.ingredients << drink_details[k] if (k.include?("Ingredient")) && drink_details[k]
+      drink.measures << drink_details[k] if (k.include?("Measure")) && drink_details[k]
+    end
+
   end
 
 end

@@ -1,7 +1,7 @@
 ## resposible for making drinks.
 
 class Drink
-  attr_accessor :name, :drink_id, :ingredient, :instructions
+  attr_accessor :name, :drink_id, :ingredient, :instructions, :ingredients, :glass, :measures
 
   @@all = []
 
@@ -9,6 +9,8 @@ class Drink
     @name = name
     @drink_id = drink_id
     @ingredient = ingredient
+    @ingredients = []  ## will be strings
+    @measures = []  ## will be strings
     @@all << self
   end
 
@@ -16,7 +18,5 @@ class Drink
     @@all
   end
 
-  def self.select_by_ingredient(ingredient)
-    self.all.select {|drink| drink.ingredient == ingredient}
-  end
+
 end
