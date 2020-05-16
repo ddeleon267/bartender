@@ -1,8 +1,6 @@
 class Api
   def self.get_drinks(ingredient)
     url = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=#{ingredient}"
-
-
     response = Net::HTTP.get(URI(url))
 
     drinks = JSON.parse(response)["drinks"]
